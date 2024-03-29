@@ -3,7 +3,7 @@ use crate::components::shapes::Triangle;
 
 /// # Window
 /// based on https://github.com/GameDevGraphics/software-graphics and his videos
-/// modifications based on our engine's needs
+/// modifications made to start to match the needs of a game engine
 pub struct Window {
     window: minifb::Window,
     framebuffer: Framebuffer,
