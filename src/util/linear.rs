@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul};
+use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
 /// Linear
 /// Linear Algebra utility structs for both internal engine use and for games dumbed down to handle only what we need.
 /// Could we just use someone else's library for some of these things? Yes, but we're trying to learn.
@@ -105,6 +105,98 @@ impl Pos2D {
         Self {
             x: self.x.max(rhs.x),
             y: self.y.max(rhs.y),
+        }
+    }
+
+    pub fn translate_x(&mut self, tx: f32) {
+        self.translate(tx, 0.0, 0.0)
+    }
+
+    pub fn translate_y(&mut self, ty: f32) {
+        self.translate(0.0, ty, 0.0)
+    }
+
+    pub fn translate(&mut self, x: f32, y: f32, z: f32) {
+        self.x += x;
+        self.y += y;
+    }
+}
+
+/// Scalar multiplication for Vec2D
+impl Mul<f32> for Vec2D {
+    type Output = Vec2D;
+    
+    fn mul(self, rhs: f32) -> Self::Output {
+        Self {
+            dx: self.dx *= rhs,
+            dy: self.dy *= rhs,
+        }
+    }
+}
+
+/// Vector addition for Vec2D
+impl Add<Vec2D> for Vec2D {
+    type Output = Vec2D;
+
+    fn add(self, rhs: Vec2D) -> Self::Output {
+        Self {
+            dx: self.dx + rhs.dx,
+            dy: self.dy + rhs.dy
+        }
+    }
+}
+
+/// Vector addition for Vec2D with assignment
+impl AddAssign<Vec2D> for Vec2D {
+    fn add_assign(&mut self, rhs: Vec2D) {
+        self.dx += rhs.dx;
+        self.dy += rhs.dy;
+    }
+}
+
+impl Sub<Vec2D> for Vec2D {
+    type Output = Vec2D;
+
+    fn sub(self, rhs: Vec2D) -> Self::Output {
+        Self {
+            dx: self.dx - rhs.dx,
+            dy: self.dy - rhs.dy
+        }
+    }
+}
+
+impl SubAssign<Vec2D> for Vec2D {
+    fn sub_assign(&mut self, rhs: Vec2D) {
+        self.dx -= rhs.dx;
+        self.dy -= rhs.dy;
+    }
+}
+
+impl Vec2D {
+    pub fn dx(&self) -> f32 {
+        self.dx
+    }
+
+    pub fn dy(&self) -> f32 {
+        self.dy
+    }
+
+    /// Convert Vec2D to Vec3D with a given dz
+    pub fn to_vec3d(self, dz: f32) -> Vec3D {
+        Vec3D {
+            dx: self.dx,
+            dy: self.dy,
+            dz: dz
+        }
+    }
+}
+
+impl Vec3D {
+    pub fn new(dx: f32, dy: f32, dz: f32) -> Self {
+        Self { 
+            dx: dx,
+            dy: dy,
+            dz: dz,
         }
     }
 }
