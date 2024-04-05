@@ -128,8 +128,8 @@ impl Mul<f32> for Vec2D {
     
     fn mul(self, rhs: f32) -> Self::Output {
         Self {
-            dx: self.dx *= rhs,
-            dy: self.dy *= rhs,
+            dx: self.dx * rhs,
+            dy: self.dy * rhs,
         }
     }
 }

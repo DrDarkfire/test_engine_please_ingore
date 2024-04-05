@@ -1,3 +1,5 @@
+use crate::util::color::Color;
+
 pub struct Material {
     color: Color,
     texture: String,
