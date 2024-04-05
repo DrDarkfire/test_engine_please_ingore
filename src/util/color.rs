@@ -1,4 +1,5 @@
-struct Color(u8, u8, u8, u8);
+#[allow(unused)]
+struct Color(u8, u8, u8, u8); // rgba
 
 /// creates a single rbg from a separated rbg
 pub fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {

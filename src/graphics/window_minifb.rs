@@ -89,7 +89,7 @@ impl Window {
                 POINTS[i * 3],
                 POINTS[i * 3 + 1],
                 POINTS[i * 3 + 2]
-            ).draw_triangle(fb, color::from_u8_rgb((i * 100 + 100) as u8, 100, 50));
+            ).draw(fb, color::from_u8_rgb((i * 100 + 100) as u8, 100, 50));
         }
 
         // DEPRECATED FROM ORIGINAL BG COLOR DRAWING
@@ -100,7 +100,7 @@ impl Window {
         // }
     }
 
-    /// When the game is set up and ready to start, run() is to be called. This is currently the game loop.
+    /// When the game is set up and ready to start, run() is to be called. This is currently the game loop. We will explore other people's game loops to figure out how ours needs to be structured.
     pub fn run(&mut self, debug: bool) {
         while !self.should_close() && !self.window.is_key_down(minifb::Key::Escape) {
             self.draw();

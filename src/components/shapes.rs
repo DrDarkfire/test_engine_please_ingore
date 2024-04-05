@@ -1,5 +1,10 @@
 use crate::{graphics::window_minifb::Framebuffer, util::linear::Pos2D};
 
+/// The shape mod will provide basic shapes for the game engine.
+/// 
+/// Eventually there will be a shape trait with functions required of every shape (i.e. draw)
+/// This is to separate functions specific to the shape
+
 pub struct Triangle {
     a: Pos2D,
     b: Pos2D,
@@ -14,7 +19,7 @@ impl Triangle {
     /// Draw the triangle on the screen on top of all previous pixels.
     /// 
     /// Later we will have an alpha channel to deal with transparency.
-    pub fn draw_triangle(&self, framebuffer: &mut Framebuffer, color: u32) {
+    pub fn draw(&self, framebuffer: &mut Framebuffer, color: u32) {
         // create a bounding box over the triangle so we don't perform checks on every coord
         let width = framebuffer.width();
         let height = framebuffer.height();
