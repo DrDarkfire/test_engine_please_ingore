@@ -61,6 +61,13 @@ impl Add<Vec2D> for Pos2D {
     }
 }
 
+impl AddAssign<Vec2D> for Pos2D {
+    fn add_assign(&mut self, rhs: Vec2D) {
+        self.x += rhs.dx;
+        self.y += rhs.dy;
+    }
+}
+
 impl Mul<Pos2D> for Pos2D {
     type Output = Pos2D;
 
@@ -119,6 +126,78 @@ impl Pos2D {
     pub fn translate(&mut self, x: f32, y: f32) {
         self.x += x;
         self.y += y;
+    }
+}
+
+impl Pos3D {
+    pub const fn new(x:f32 , y: f32, z: f32) -> Self {
+        Self { x, y, z }
+    }
+    pub fn x(&self) -> f32 {
+        self.x
+    }
+
+    pub fn y(&self) -> f32 {
+        self.y
+    }
+
+    pub fn z(&self) -> f32 {
+        self.z
+    }
+
+    /// returns a new point with the min x and min y between the two points
+    pub fn min(self, rhs: Pos3D) -> Pos3D {
+        Self {
+            x: self.x.min(rhs.x),
+            y: self.y.min(rhs.y),
+            z: self.z.min(rhs.z),
+        }
+    }
+
+    pub fn max(self, rhs: Pos3D) -> Pos3D {
+        Self {
+            x: self.x.max(rhs.x),
+            y: self.y.max(rhs.y),
+            z: self.z.max(rhs.z),
+        }
+    }
+
+    pub fn translate_x(&mut self, tx: f32) {
+        self.translate(tx, 0.0, 0.0)
+    }
+
+    pub fn translate_y(&mut self, ty: f32) {
+        self.translate(0.0, ty, 0.0)
+    }
+
+    pub fn translate_z(&mut self, tz: f32) {
+        self.translate(0.0, 0.0, tz)
+    }
+
+    pub fn translate(&mut self, x: f32, y: f32, z: f32) {
+        self.x += x;
+        self.y += y;
+        self.z += z;
+    }
+}
+
+impl Add<Vec3D> for Pos3D {
+    type Output = Pos3D;
+
+    fn add(self, rhs: Vec3D) -> Self {
+        Pos3D {
+            x: self.x + rhs.dx,
+            y: self.y + rhs.dy,
+            z: self.z + rhs.dz,
+        }
+    }
+}
+
+impl AddAssign<Vec3D> for Pos3D {
+    fn add_assign(&mut self, rhs: Vec3D) {
+        self.x += rhs.dx;
+        self.y += rhs.dy;
+        self.z += rhs.dz;
     }
 }
 
@@ -192,6 +271,9 @@ impl Vec2D {
 }
 
 impl Vec3D {
+    pub const ZERO: Pos3D = Pos3D {x: 0.0, y: 0.0, z: 0.0};
+    pub const ONE: Pos3D = Pos3D {x: 1.0, y: 1.0, z: 1.0};
+
     pub fn new(dx: f32, dy: f32, dz: f32) -> Self {
         Self { 
             dx: dx,
