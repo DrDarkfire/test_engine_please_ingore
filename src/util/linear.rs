@@ -127,6 +127,13 @@ impl Pos2D {
         self.x += x;
         self.y += y;
     }
+
+    /// 2D cartesian to polar coords
+    pub fn cartesian_to_polar(self) -> (f32, f32) {
+        let r = (self.x().powi(2) + self.y().powi(2)).sqrt();
+        let theta = f32::atan2(self.y(), self.x());
+        (r, theta)
+    }
 }
 
 impl Pos3D {
