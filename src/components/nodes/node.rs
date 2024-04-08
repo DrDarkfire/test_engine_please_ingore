@@ -1,5 +1,7 @@
+#[allow(unused)]
 use crate::{graphics::texture::Material, util::linear::{Pos2D, Pos3D, Vec3D}};
 
+#[allow(unused)]
 pub struct Node {
     parent: Option<Box<Node>>,
     children: Vec<Node>,
@@ -9,23 +11,27 @@ pub struct Node {
     scene: Scene,
 }
 
+#[allow(unused)]
 pub struct Camera2D {
     node: Node,
     pos: Pos2D,
 }
 
+#[allow(unused)]
 pub struct Camera3D {
     node: Node,
     pos: Pos3D,
     direction: Direction3D
 }
 
+#[allow(unused)]
 pub struct Direction3D {
     x: f32,
     y: f32,
     z: f32,
 }
 
+#[allow(unused)]
 pub struct Scene {
     parent_node: Box<Node>,
 }

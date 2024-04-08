@@ -85,7 +85,7 @@ impl Window {
         fb.clear(color::from_u8_rgb(20, 20, 20));
 
         for i in 0..(POINTS.len() / 3) {
-            let t = Triangle::new(
+            Triangle::new(
                 POINTS[i * 3],
                 POINTS[i * 3 + 1],
                 POINTS[i * 3 + 2]

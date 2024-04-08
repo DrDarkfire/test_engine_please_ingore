@@ -109,14 +109,14 @@ impl Pos2D {
     }
 
     pub fn translate_x(&mut self, tx: f32) {
-        self.translate(tx, 0.0, 0.0)
+        self.translate(tx, 0.0)
     }
 
     pub fn translate_y(&mut self, ty: f32) {
-        self.translate(0.0, ty, 0.0)
+        self.translate(0.0, ty)
     }
 
-    pub fn translate(&mut self, x: f32, y: f32, z: f32) {
+    pub fn translate(&mut self, x: f32, y: f32) {
         self.x += x;
         self.y += y;
     }
