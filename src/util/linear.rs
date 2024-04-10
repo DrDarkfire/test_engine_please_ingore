@@ -134,6 +134,10 @@ impl Pos2D {
         let theta = f32::atan2(self.y(), self.x());
         (r, theta)
     }
+
+    /* lerp pseudo-code and resource: https://docs.godotengine.org/en/stable/tutorials/math/interpolation.html
+    
+     */
 }
 
 impl Pos3D {
