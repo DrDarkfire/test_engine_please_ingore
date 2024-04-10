@@ -4,7 +4,7 @@ use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
 /// Could we just use someone else's library for some of these things? Yes, but we're trying to learn.
 /// 
 
-/// # Position
+/// ## Position
 /// Primarily for UI/HUD element use. This is for when we only need to deal with integers and don't need incredibly specific coords.
 #[derive(Debug, Copy, Clone)]
 #[allow(unused)]
@@ -13,20 +13,20 @@ pub struct Postion {
     y: u32,
 }
 
-/// # Pos2D
-/// Primarily for giving nodes accurate positons in 2D games.
+/// ## Pos2D
+/// Primary struct for giving nodes accurate positons and movement in 2D games.
 #[derive(Debug, Copy, Clone)]
 pub struct Pos2D {
-    pub x: f32,
-    pub y: f32,
+    x: f32,
+    y: f32,
 }
 
 pub const fn pos2d(x: f32, y: f32) -> Pos2D {
     Pos2D::new(x, y)
 }
 
-/// # Pos3D
-/// Primarily for giving nodes accurate positons in 3D games.
+/// ## Pos3D
+/// Primary struct for giving nodes accurate positons and movement in 3D games.
 #[derive(Debug, Copy, Clone)]
 #[allow(unused)]
 pub struct Pos3D {
@@ -35,12 +35,16 @@ pub struct Pos3D {
     z: f32,
 }
 
+/// ## Vec2D
+/// struct to manipulate a pos in a 2D space
 #[derive(Debug, Copy, Clone)]
 pub struct Vec2D {
     dx: f32,
     dy: f32,
 }
 
+/// ## Vec3D
+/// struct to manipulate a pos in a 3D same 
 #[allow(unused)]
 #[derive(Debug, Copy, Clone)]
 pub struct Vec3D {
@@ -49,7 +53,10 @@ pub struct Vec3D {
     dz: f32,
 }
 
-/// Impl blocks for Pos2D and Vec2D
+/// ## Impl blocks for Pos2D and Vec2D
+/// 
+
+/// translate a Pos2D by adding a vector
 impl Add<Vec2D> for Pos2D {
     type Output = Pos2D;
 
@@ -61,13 +68,17 @@ impl Add<Vec2D> for Pos2D {
     }
 }
 
+/// translate and assign a Pos2D by adding a vector
 impl AddAssign<Vec2D> for Pos2D {
     fn add_assign(&mut self, rhs: Vec2D) {
-        self.x += rhs.dx;
-        self.y += rhs.dy;
+        *self = Self {
+            x: self.x + rhs.dx(),
+            y: self.y + rhs.dy()
+        }
     }
 }
 
+/// multiplies two points
 impl Mul<Pos2D> for Pos2D {
     type Output = Pos2D;
 
@@ -92,15 +103,17 @@ impl Pos2D {
         Self::new(self.x, self.y)
     }
 
+    /// getter for the x data member
     pub fn x(&self) -> f32 {
         self.x
     }
 
+    /// getter for the y data member
     pub fn y(&self) -> f32 {
         self.y
     }
 
-    /// returns a new point with the min x and min y between the two points
+    /// returns a new point with the min x and min y between self and another point
     pub fn min(self, rhs: Pos2D) -> Pos2D {
         Self {
             x: self.x.min(rhs.x),
@@ -108,6 +121,7 @@ impl Pos2D {
         }
     }
 
+    /// returns a new point with the max x and max y between self and another point
     pub fn max(self, rhs: Pos2D) -> Pos2D {
         Self {
             x: self.x.max(rhs.x),
@@ -115,17 +129,33 @@ impl Pos2D {
         }
     }
 
+    /// translates a point instantly given an x distance (tx)
     pub fn translate_x(&mut self, tx: f32) {
-        self.translate(tx, 0.0)
+        self = self + Vec2D::new(tx, 0.0);
     }
 
+    /// translates a point instantly given a y distance (ty)
     pub fn translate_y(&mut self, ty: f32) {
-        self.translate(0.0, ty)
+        self = self + Vec2D::new(0.0, ty)
     }
 
-    pub fn translate(&mut self, x: f32, y: f32) {
-        self.x += x;
-        self.y += y;
+    /// translates a point instantly given an x and y distance (tx, ty)
+    pub fn translate(&mut self, tx: f32, ty: f32) {
+        self = self + Vec2D::new(tx, ty)
+    }
+
+    /// lerp covers the states from start to end of the distance between a start point and and end point where t is the % completion 
+    /// 
+    /// lerp function can be simplified to
+    /// 
+    /// lerp(a, b, t) = a + (b - a) * t
+    /// 
+    /// lerp pseudo-code and resource: https://docs.godotengine.org/en/stable/tutorials/math/interpolation.html
+    pub fn lerp(start: Pos2D, end: Pos2D, t: f32) -> Pos2D {
+        Pos2D {
+            x: start.x() + (end.x() - start.x()) * t,
+            y: start.y() + (end.y() - start.y()) * t,
+        }
     }
 
     /// 2D cartesian to polar coords
@@ -263,6 +293,13 @@ impl SubAssign<Vec2D> for Vec2D {
 }
 
 impl Vec2D {
+    pub fn new(dx: f32, dy: f32) -> Vec2D {
+        Vec2D {
+            dx: dx,
+            dy: dy,
+        }
+    }
+
     pub fn dx(&self) -> f32 {
         self.dx
     }

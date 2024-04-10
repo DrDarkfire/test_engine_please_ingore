@@ -27,8 +27,8 @@ impl Triangle {
         let min = self.a.min(self.b.min(self.c)).max(Pos2D::ZERO) * Pos2D::new(width as f32, height as f32);
         let max = self.a.max(self.b.max(self.c)).min(Pos2D::ONE) * Pos2D::new(width as f32, height as f32);
 
-        for x in (min.x as usize)..(max.x as usize) {
-            for y in (min.y as usize)..(max.y as usize) {
+        for x in (min.x() as usize)..(max.x() as usize) {
+            for y in (min.y() as usize)..(max.y() as usize) {
                 // create a point for each pixel we are attempting to modify within 0 - 1
                 let p = Pos2D::new(x as f32 / width as f32, y as f32 / height as f32);
 
@@ -42,7 +42,7 @@ impl Triangle {
     /// if edge_function returns positive we are inside the triangle, if not we are outside
     pub fn edge_function(&self, a: &Pos2D, c: &Pos2D, b: &Pos2D) -> f32 {
         // we force passing in references to minimize copying things we don't need to. 
-        (c.x - a.x) * (b.y- a.y) - (c.y - a.y) * (b.x - a.x)
+        (c.x() - a.x()) * (b.y()- a.y()) - (c.y() - a.y()) * (b.x() - a.x())
     }
 
     // works with CLOCKWISE winding order

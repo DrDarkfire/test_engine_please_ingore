@@ -62,6 +62,24 @@ impl Node {
     }
 }
 
+impl Camera3D {
+    pub fn translate_x(&mut self, tx: f32) {
+        self.pos.translate_x(tx);
+    }
+
+    pub fn translate_y(&mut self, ty: f32) {
+        self.pos.translate_y(ty);
+    }
+
+    pub fn translate_z(&mut self, tz: f32) {
+        self.pos.translate_z(tz);
+    }
+
+    pub fn translate(&mut self, x: f32, y: f32, z: f32) {
+        self.pos.translate(x, y, z);
+    }
+}
+
 impl Direction3D {
     pub const NORTH: Direction3D = Direction3D { x: 1.0, y: 0.0, z: 0.0};
     pub const SOUTH: Direction3D = Direction3D { x:-1.0, y: 0.0, z: 0.0};
