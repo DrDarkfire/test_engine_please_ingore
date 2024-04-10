@@ -1,6 +1,7 @@
 #[allow(unused)]
 use crate::{graphics::texture::Material, util::linear::{Pos2D, Pos3D, Vec3D}};
 
+// node needs to be converted to a trait with predetermined member functions. this way we can make a tree
 #[allow(unused)]
 pub struct Node {
     parent: Option<Box<Node>>,

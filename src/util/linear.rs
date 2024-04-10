@@ -113,6 +113,22 @@ impl Pos2D {
         self.y
     }
 
+    /// assign a new x value
+    pub fn set_x(&mut self, x: f32) {
+        self.x = x
+    }
+
+    /// assign a new y value
+    pub fn set_y(&mut self, y: f32) {
+        self.y = y
+    }
+
+    /// assign a new x and y value
+    pub fn set(&mut self, x: f32, y: f32) {
+        self.x = x;
+        self.y = y;
+    }
+
     /// returns a new point with the min x and min y between self and another point
     pub fn min(self, rhs: Pos2D) -> Pos2D {
         Self {
@@ -164,10 +180,6 @@ impl Pos2D {
         let theta = f32::atan2(self.y(), self.x());
         (r, theta)
     }
-
-    /* lerp pseudo-code and resource: https://docs.godotengine.org/en/stable/tutorials/math/interpolation.html
-    
-     */
 }
 
 impl Pos3D {
@@ -184,6 +196,29 @@ impl Pos3D {
 
     pub fn z(&self) -> f32 {
         self.z
+    }
+
+    /// assign a new x value
+    pub fn set_x(&mut self, x: f32) {
+        self.x = x
+    }
+
+    /// assign a new y value
+    pub fn set_y(&mut self, y: f32) {
+        self.y = y
+    }
+
+    pub fn set_z(&mut self, z: f32) {
+        self.z = z
+    }
+
+    /// assign a new x and y value
+    pub fn set(&mut self, x: f32, y: f32, z: f32) {
+        *self = Self {
+            x: x,
+            y: y,
+            z: z,
+        }
     }
 
     /// returns a new point with the min x and min y between the two points
@@ -204,21 +239,27 @@ impl Pos3D {
     }
 
     pub fn translate_x(&mut self, tx: f32) {
-        self.translate(tx, 0.0, 0.0)
+        self = self + Vec3D::new(tx, 0.0, 0.0)
     }
 
     pub fn translate_y(&mut self, ty: f32) {
-        self.translate(0.0, ty, 0.0)
+        self = self + Vec3D::new(0.0, ty, 0.0)
     }
 
     pub fn translate_z(&mut self, tz: f32) {
-        self.translate(0.0, 0.0, tz)
+        self = self + Vec3D::new(0.0, 0.0, tz)
     }
 
-    pub fn translate(&mut self, x: f32, y: f32, z: f32) {
-        self.x += x;
-        self.y += y;
-        self.z += z;
+    pub fn translate(&mut self, tx: f32, ty: f32, tz: f32) {
+        self = self + Vec3D::new(tx, ty, tz)
+    }
+
+    pub fn lerp(start: Pos3D, end: Pos3D, t: f32) -> Pos3D {
+        Pos3D {
+            x: start.x() + (end.x() - start.x()) * t,
+            y: start.y() + (end.y() - start.y()) * t,
+            z: start.z() + (end.z() - start.z()) * t,
+        }
     }
 }
 
