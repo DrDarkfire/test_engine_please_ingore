@@ -3,24 +3,37 @@ use crate::{graphics::texture::Material, util::linear::{Pos2D, Pos3D, Vec3D}};
 
 // node needs to be converted to a trait with predetermined member functions. this way we can make a tree
 #[allow(unused)]
-pub struct Node {
-    parent: Option<Box<Node>>,
-    children: Vec<Node>,
-    id: String,
-    name: String,
-    texture: Material,
-    scene: Scene,
+// pub struct Node {
+//     parent: Option<Box<Node>>,
+//     children: Vec<Node>,
+//     id: String,
+//     name: String,
+//     texture: Material,
+//     scene: Scene,
+// }
+
+trait Node {
+    /// Returns the list of children.
+    pub fn children(&self) -> &[Box<dyn Node>];
+    /// Returns Some(Parent node) or None
+    pub fn parent(&self) -> Option<&dyn Node>;
+    /// Whether or not a node can be moved.
+    /// 
+    /// Serves as a lock where applicable.
+    pub fn is_dynamic(&self) -> bool;
 }
 
 #[allow(unused)]
 pub struct Camera2D {
-    node: Node,
+    children: Vec<Box<dyn Node>>,
+    parent: Option<Box<dyn Node>>,
     pos: Pos2D,
 }
 
 #[allow(unused)]
 pub struct Camera3D {
-    node: Node,
+    children: Vec<Box<dyn Node>>,
+    parent: Option<Box<dyn Node>>,
     pos: Pos3D,
     direction: Direction3D
 }
@@ -34,10 +47,10 @@ pub struct Direction3D {
 
 #[allow(unused)]
 pub struct Scene {
-    parent_node: Box<Node>,
+    parent_node: Box<dyn Node>,
 }
 
-impl Node {
+impl Node for Camera2D {
     /// Returns parent node if it exists
     // pub fn parent(&self) -> Option<Box<Node>> {
     //     if self.parent.is_some() {
@@ -46,20 +59,18 @@ impl Node {
     //         None
     //     }
     // }
-    pub fn parent(&self) -> Option<&Node> {
+    fn parent(&self) -> Option<&dyn Node> {
         // as_ref turns it into a borrowed value
         // if as_ref returns some &Box<Node> we unbox the node and return Some &Node or None
         self.parent.as_ref().map(|parent_box| &**parent_box) // deref Option and Box
     }
 
-    /// If children is empty, it returns None.
-    /// Else, it returns the list of children.
-    pub fn children(&self) -> Option<&Vec<Node>> {
-        if self.children.is_empty() {
-            None
-        } else {
-            Some(self.children.as_ref())
-        }
+    fn children(&self) -> &[Box<dyn Node>] {
+        &self.children
+    }
+
+    fn is_dynamic(&self) -> bool {
+        true
     }
 }
 
