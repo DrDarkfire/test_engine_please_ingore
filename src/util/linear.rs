@@ -1,4 +1,4 @@
-use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Deref, Mul, Sub, SubAssign};
 /// Linear
 /// Linear Algebra utility structs for both internal engine use and for games dumbed down to handle only what we need.
 /// Could we just use someone else's library for some of these things? Yes, but we're trying to learn.
@@ -148,11 +148,13 @@ impl Pos2D {
     /// translates a point instantly given an x distance (tx)
     pub fn translate_x(&mut self, tx: f32) {
         self = self + Vec2D::new(tx, 0.0);
+        *self = *self + Vec2D::new(tx, 0.0);
+        //self.add(Vec2D::new(tx, 0.0));
     }
 
     /// translates a point instantly given a y distance (ty)
     pub fn translate_y(&mut self, ty: f32) {
-        self = self + Vec2D::new(0.0, ty)
+        *self = *self + Vec2D::new(0.0, ty)
     }
 
     /// translates a point instantly given an x and y distance (tx, ty)

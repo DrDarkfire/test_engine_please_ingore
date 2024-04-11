@@ -14,15 +14,18 @@ use crate::{graphics::texture::Material, util::linear::{Pos2D, Pos3D, Vec3D}};
 
 trait Node {
     /// Returns the list of children.
-    pub fn children(&self) -> &[Box<dyn Node>];
+    fn children(&self) -> &[Box<dyn Node>];
     /// Returns Some(Parent node) or None
-    pub fn parent(&self) -> Option<&dyn Node>;
+    fn parent(&self) -> Option<&dyn Node>;
     /// Whether or not a node can be moved.
     /// 
     /// Serves as a lock where applicable.
-    pub fn is_dynamic(&self) -> bool;
+    fn is_dynamic(&self) -> bool;
+    // all movable nodes should have functions for rippling movement down the tree.
+    // we should consider having some sort of lock to do the movement in unison even though
 }
 
+/// Camera node for 2D games.
 #[allow(unused)]
 pub struct Camera2D {
     children: Vec<Box<dyn Node>>,
@@ -30,6 +33,7 @@ pub struct Camera2D {
     pos: Pos2D,
 }
 
+/// Camera node for 3D games.
 #[allow(unused)]
 pub struct Camera3D {
     children: Vec<Box<dyn Node>>,
@@ -71,6 +75,25 @@ impl Node for Camera2D {
 
     fn is_dynamic(&self) -> bool {
         true
+    }
+}
+
+impl Camera2D {
+    pub fn translate_x(&mut self, tx: f32) {
+        self.pos.translate_x(tx);
+    }
+
+    pub fn translate_y(&mut self, ty: f32) {
+        self.pos.translate_y(ty);
+    }
+
+    pub fn translate(&mut self, x: f32, y: f32) {
+        self.pos.translate(x, y);
+    }
+
+    pub fn ripple_translate(&mut self, x: f32, y: f32) {
+        // map children to get out of box
+        // if dynamic(movable) recursive call
     }
 }
 
