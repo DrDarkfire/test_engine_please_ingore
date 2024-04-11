@@ -147,19 +147,20 @@ impl Pos2D {
 
     /// translates a point instantly given an x distance (tx)
     pub fn translate_x(&mut self, tx: f32) {
-        self = self + Vec2D::new(tx, 0.0);
-        *self = *self + Vec2D::new(tx, 0.0);
-        //self.add(Vec2D::new(tx, 0.0));
+        self.x += tx
+        // while this method is possible it is not necessary
+        //*self = *self + Vec2D::new(tx, 0.0);
     }
 
     /// translates a point instantly given a y distance (ty)
     pub fn translate_y(&mut self, ty: f32) {
-        *self = *self + Vec2D::new(0.0, ty)
+        self.y += ty
     }
 
     /// translates a point instantly given an x and y distance (tx, ty)
     pub fn translate(&mut self, tx: f32, ty: f32) {
-        self = self + Vec2D::new(tx, ty)
+        self.x += tx;
+        self.y += ty;
     }
 
     /// lerp covers the states from start to end of the distance between a start point and and end point where t is the % completion 
@@ -174,6 +175,21 @@ impl Pos2D {
             x: start.x() + (end.x() - start.x()) * t,
             y: start.y() + (end.y() - start.y()) * t,
         }
+    }
+
+    /// debug method for lerp
+    /// 
+    /// can also be used to help create transitions between two points
+    /// 
+    /// the returned Vec will contain the start and end pos 
+    /// 
+    /// steps is inclusive to the end
+    pub fn lerp_steps(start: Pos2D, end: Pos2D, steps: u32) -> Vec<Pos2D> {
+        let mut v: Vec<Pos2D> = Vec::new();
+        for i in 0..steps {
+            v.push(Pos2D::lerp(start, end, i as f32 / steps as f32));
+        }
+        v
     }
 
     /// 2D cartesian to polar coords
