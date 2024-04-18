@@ -91,6 +91,7 @@ impl Camera2D {
         self.pos.translate(x, y);
     }
 
+    #[allow(unused)]
     pub fn ripple_translate(&mut self, x: f32, y: f32) {
         // map children to get out of box
         // if dynamic(movable) recursive call

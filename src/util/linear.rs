@@ -1,4 +1,5 @@
-use std::ops::{Add, AddAssign, Deref, Mul, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
+use std::fmt;
 /// Linear
 /// Linear Algebra utility structs for both internal engine use and for games dumbed down to handle only what we need.
 /// Could we just use someone else's library for some of these things? Yes, but we're trying to learn.
@@ -257,19 +258,19 @@ impl Pos3D {
     }
 
     pub fn translate_x(&mut self, tx: f32) {
-        self = self + Vec3D::new(tx, 0.0, 0.0)
+        self.x += tx
     }
 
     pub fn translate_y(&mut self, ty: f32) {
-        self = self + Vec3D::new(0.0, ty, 0.0)
+        self.y += ty
     }
 
     pub fn translate_z(&mut self, tz: f32) {
-        self = self + Vec3D::new(0.0, 0.0, tz)
+        self.z += tz
     }
 
     pub fn translate(&mut self, tx: f32, ty: f32, tz: f32) {
-        self = self + Vec3D::new(tx, ty, tz)
+        *self = *self + Vec3D::new(tx, ty, tz)
     }
 
     pub fn lerp(start: Pos3D, end: Pos3D, t: f32) -> Pos3D {
@@ -387,5 +388,71 @@ impl Vec3D {
             dy: dy,
             dz: dz,
         }
+    }
+}
+
+// Equality blocks we probably should've just derived them but it's too late now.
+impl PartialEq for Pos2D {
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        self.x != other.x || self.y != other.y
+    }
+}
+
+impl PartialEq for Pos3D {
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y && self.z == other.z
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        self.x != other.x || self.y != other.y || self.z != other.z
+    }
+}
+
+impl PartialEq for Vec2D {
+    fn eq(&self, other: &Self) -> bool {
+        self.dx == other.dx && self.dy == other.dy
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        self.dx != other.dx || self.dy != other.dy
+    }
+}
+
+impl PartialEq for Vec3D {
+    fn eq(&self, other: &Self) -> bool {
+        self.dx == other.dx && self.dy == other.dy && self.dz == other.dz
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        self.dx != other.dx || self.dy != other.dy || self.dz != other.dz
+    }
+}
+
+// Formatting blocks
+impl fmt::Display for Pos2D {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Pos2D: {{ x: {}, y: {} }}", self.x, self.y)
+    }
+}
+
+impl fmt::Display for Pos3D {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Pos3D: {{ x: {}, y: {}, z: {} }}", self.x, self.y, self.z)
+    }
+}
+
+impl fmt::Display for Vec2D {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Vec2D: {{ dx: {}, dy: {} }}", self.dx, self.dy)
+    }
+}
+
+impl fmt::Display for Vec3D {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Vec3D: {{ dx: {}, dy: {}, dz: {} }}", self.dx, self.dy, self.dz)
     }
 }
