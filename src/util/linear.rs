@@ -273,12 +273,25 @@ impl Pos3D {
         *self = *self + Vec3D::new(tx, ty, tz)
     }
 
+    /// lerp covers the states from start to end of the distance between a start point and and end point where t is the % completion 
+    /// 
+    /// lerp function can be simplified to
+    /// 
+    /// lerp(a, b, t) = a + (b - a) * t 
     pub fn lerp(start: Pos3D, end: Pos3D, t: f32) -> Pos3D {
         Pos3D {
             x: start.x() + (end.x() - start.x()) * t,
             y: start.y() + (end.y() - start.y()) * t,
             z: start.z() + (end.z() - start.z()) * t,
         }
+    }
+    
+    pub fn lerp_steps(start: Pos3D, end: Pos3D, steps: u32) -> Vec<Pos3D> {
+        let mut v: Vec<Pos3D> = Vec::new();
+        for i in 0..steps + 1 {
+            v.push(Pos3D::lerp(start, end, i as f32 / steps as f32));
+        }
+        v
     }
 }
 
