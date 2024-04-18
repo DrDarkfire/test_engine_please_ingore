@@ -187,7 +187,7 @@ impl Pos2D {
     /// steps is inclusive to the end
     pub fn lerp_steps(start: Pos2D, end: Pos2D, steps: u32) -> Vec<Pos2D> {
         let mut v: Vec<Pos2D> = Vec::new();
-        for i in 0..steps {
+        for i in 0..steps + 1 {
             v.push(Pos2D::lerp(start, end, i as f32 / steps as f32));
         }
         v
@@ -456,3 +456,11 @@ impl fmt::Display for Vec3D {
         write!(f, "Vec3D: {{ dx: {}, dy: {}, dz: {} }}", self.dx, self.dy, self.dz)
     }
 }
+
+// impl fmt::Display for Vec<Pos2D> {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         for v in 0..self.len() {
+//             writeln!(f, "Step {}: {}", v, self.get(v))
+//         }
+//     }
+// }
