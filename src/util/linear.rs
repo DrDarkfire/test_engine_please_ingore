@@ -202,6 +202,9 @@ impl Pos2D {
 }
 
 impl Pos3D {
+    pub const ZERO: Pos3D = Pos3D {x: 0.0, y: 0.0, z: 0.0};
+    pub const ONE: Pos3D = Pos3D {x: 1.0, y: 1.0, z: 1.0};
+
     pub const fn new(x:f32 , y: f32, z: f32) -> Self {
         Self { x, y, z }
     }
@@ -381,6 +384,19 @@ impl Vec2D {
         self.dy
     }
 
+    pub fn set_dx(&mut self, dx: f32) {
+        self.dx = dx
+    }
+
+    pub fn set_dy(&mut self, dy: f32) {
+        self.dy = dy
+    }
+
+    pub fn set(&mut self, dx: f32, dy: f32) {
+        self.dx = dx;
+        self.dy = dy;
+    }
+
     /// Convert Vec2D to Vec3D with a given dz
     pub fn to_vec3d(self, dz: f32) -> Vec3D {
         Vec3D {
@@ -401,6 +417,36 @@ impl Vec3D {
             dy: dy,
             dz: dz,
         }
+    }
+
+    pub fn dx(&self) -> f32 {
+        self.dx
+    }
+
+    pub fn dy(&self) -> f32 {
+        self.dy
+    }
+
+    pub fn dz(&self) -> f32 {
+        self.dz
+    }
+
+    pub fn set_dx(&mut self, dx: f32) {
+        self.dx = dx
+    }
+
+    pub fn set_dy(&mut self, dy: f32) {
+        self.dy = dy
+    }
+
+    pub fn set_dz(&mut self, dz: f32) {
+        self.dz = dz
+    }
+
+    pub fn set(&mut self, dx: f32, dy: f32, dz: f32) {
+        self.dx = dx;
+        self.dy = dy;
+        self.dz = dz;
     }
 }
 
