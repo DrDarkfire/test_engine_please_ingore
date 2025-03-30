@@ -1,4 +1,6 @@
 # test implementation and playground of TEPI(Test Engine Please Ignore)
+Reinventing the wheel just to learn
+
 We're undertaking the large task of making our own basic game engine. The different tech for graphics being explored in this engine is OpenGL with glfw, and minifb on its own.
 
 ## Testing instructions

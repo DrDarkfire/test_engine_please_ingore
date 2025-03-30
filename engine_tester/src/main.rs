@@ -12,7 +12,7 @@ fn main() {
     //     }
     //     window.update();
     // }
-    let mut window = Window::new("graphics from scratch!", 512, 512);
+    let mut window = Window::new("test window", 512, 512);
     // eventually window will have a param of start_scene to dynamically pass what we initially render
     window.run(true);
 }

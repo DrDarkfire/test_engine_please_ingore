@@ -104,6 +104,9 @@ impl Pos2D {
         Self::new(self.x, self.y)
     }
 
+    pub fn new_from_other(other: Pos2D) -> Pos2D {
+        Pos2D { x: other.x(), y: other.y() }
+    }
     /// getter for the x data member
     pub fn x(&self) -> f32 {
         self.x
@@ -162,6 +165,10 @@ impl Pos2D {
     pub fn translate(&mut self, tx: f32, ty: f32) {
         self.x += tx;
         self.y += ty;
+    }
+
+    pub fn add_scalar(&mut self, scalar: f32) {
+        self.translate(scalar, scalar)
     }
 
     /// lerp covers the states from start to end of the distance between a start point and and end point where t is the % completion 

@@ -1,4 +1,8 @@
-use crate::util::linear::*;
+use std::time::SystemTime;
+
+use components::shapes::{Rect, Triangle};
+
+use crate::{components::nodes::node::Camera2D, util::linear::*};
 
 pub mod graphics;
 pub mod util;
@@ -124,4 +128,77 @@ fn test_vec2d() {
     assert_eq!(v1, v2);
     v1.set(2.0, 4.0);
     assert_eq!(v1, v3);
+}
+
+#[test]
+fn test_triangle() {
+    let tp1: Pos2D = Pos2D::new(-100.0, -140.0);//(-0.5, -0.5)
+    let tp2: Pos2D = Pos2D::new(-180.0, -140.0);//(0, 0.5)
+    let tp3: Pos2D = Pos2D::new(-100.0, -180.0);//(0.5, 0.5)
+
+    let tp4: Pos2D = Pos2D::new(0.5, 0.7);
+    let tp5: Pos2D = Pos2D::new(0.9, 0.7);
+    let tp6: Pos2D = Pos2D::new(0.5, 0.9);
+
+    let tp7: Pos2D = Pos2D::new(100.0, 140.0);
+    let tp8: Pos2D = Pos2D::new(180.0, 140.0);
+    let tp9: Pos2D = Pos2D::new(100.0, 180.0);
+
+    let t1 = Triangle::new(tp1, tp2, tp3);
+    let t2 = Triangle::new(tp4, tp5, tp6);
+    let t3 = Triangle::new(tp7, tp8, tp9);
+    let p1 = Pos2D::ZERO;
+    let p2 = Pos2D::new(0.6, 0.75);
+    let p3 = Pos2D::new(-120.0, -141.0);
+    let p4 = Pos2D::new(120.0, 141.0);
+    assert_eq!(t1.inside_eh(&p1), false);
+    assert_eq!(t1.inside_eh(&p3), true);
+    assert_eq!(t2.inside_eh(&p1), false);
+    assert_eq!(t2.inside_eh(&p2), true);
+
+    // test integrity of draw_abs
+    let cam = Camera2D::new(Pos2D::new(0.0, 0.0));
+
+    let width: f32 = 512.0;
+    let height: f32 = 512.0;
+    
+    // check if we are allowed to draw
+    assert_eq!(t3.render_guard(&cam, width, height), true);
+
+    // check our view bounds
+    let mut bl = Pos2D::new_from_other(cam.pos());
+    bl.translate(-(width / 2.0), -(height / 2.0));
+    println!("bl: {}", bl);
+    assert_eq!(Pos2D::new(-256.0, -256.0), bl);
+    let mut tr = Pos2D::new_from_other(cam.pos());
+    tr.translate(width / 2.0, height / 2.0);
+    println!("tr: {}", tr);
+    assert_eq!(Pos2D::new(256.0, 256.0), tr);
+
+    // offset checks
+    let offset = Pos2D::new(-bl.x(), -bl.y());
+    println!("our offset is {}", offset);
+    println!("bl with offset is {}, {}", bl.x() + offset.x(), bl.y() + offset.y());
+    // get the bounding box and and adjust to not care about anything outside of the viewport
+    let mut bounds = t3.bounds();
+
+    bounds.0 = bounds.0.max(bl);
+    println!("bounds.0 {}", bounds.0);
+
+    bounds.1 = bounds.1.min(tr);
+    println!("bounds.1 {}", bounds.1);
+    
+    println!("drawing at: {}", bounds.0.x() + offset.x());
+
+}
+
+#[test]
+fn test_rect() {
+    let r1 = Rect::new(Pos2D::new(100.0, 100.0), 100.0, 200.0);
+    println!("a: {},\nb: {},\nc: {},\nd: {}", r1.a(), r1.b(), r1.c(), r1.d());
+}
+
+#[test]
+fn test_logger() {
+    
 }

@@ -30,7 +30,7 @@ trait Node {
 pub struct Camera2D {
     children: Vec<Box<dyn Node>>,
     parent: Option<Box<dyn Node>>,
-    pos: Pos2D,
+    pos: Pos2D
 }
 
 /// Camera node for 3D games.
@@ -54,6 +54,12 @@ pub struct Scene {
     parent_node: Box<dyn Node>,
 }
 
+impl Camera2D {
+    pub fn new(pos: Pos2D) -> Camera2D {
+        Camera2D { children: Vec::new(), parent: None, pos: (pos) }
+    }
+}
+
 impl Node for Camera2D {
     /// Returns parent node if it exists
     // pub fn parent(&self) -> Option<Box<Node>> {
@@ -63,6 +69,7 @@ impl Node for Camera2D {
     //         None
     //     }
     // }
+
     fn parent(&self) -> Option<&dyn Node> {
         // as_ref turns it into a borrowed value
         // if as_ref returns some &Box<Node> we unbox the node and return Some &Node or None
@@ -95,6 +102,17 @@ impl Camera2D {
     pub fn ripple_translate(&mut self, x: f32, y: f32) {
         // map children to get out of box
         // if dynamic(movable) recursive call
+    }
+
+    pub fn pos(&self) -> Pos2D {
+        return self.pos
+    }
+
+    pub fn viewport(&self, width: f32, height: f32) -> (Pos2D, Pos2D) {
+        let (mut bl, mut tr) = (self.pos.new_from_self(), self.pos.new_from_self());
+        bl.translate(-width / 2.0, -height / 2.0);
+        tr.translate(width / 2.0, height / 2.0);
+        (bl , tr)
     }
 }
 

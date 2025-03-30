@@ -1,5 +1,7 @@
+use crate::components::nodes::node::Camera2D;
+use crate::pos2d;
 use crate::util::{color, linear::Pos2D};
-use crate::components::shapes::Triangle;
+use crate::components::shapes::{Rect, Triangle};
 
 /// # Window
 /// based on https://github.com/GameDevGraphics/software-graphics and his videos
@@ -16,7 +18,7 @@ pub struct Framebuffer {
 }
 
 static POINTS: &[Pos2D] = &[
-    Pos2D::new(0.3, 0.3),
+    Pos2D::new(-0.5, 0.3),
     Pos2D::new(0.7, 0.3),
     Pos2D::new(0.5, 0.7),
 
@@ -27,6 +29,12 @@ static POINTS: &[Pos2D] = &[
     Pos2D::new(0.5, 0.7),
     Pos2D::new(0.9, 0.7),
     Pos2D::new(0.5, 0.9),
+];
+
+static POINTS_ABS: &[Pos2D] = &[
+    Pos2D::new(-100.0, -100.0),
+    Pos2D::new(150.0, -100.0),
+    Pos2D::new(100.0, 100.0)
 ];
 
 impl Window {
@@ -84,24 +92,28 @@ impl Window {
         // place down our background color first in each frame eventually should be specified to hold a color or image.
         fb.clear(color::from_u8_rgb(20, 20, 20));
 
-        for i in 0..(POINTS.len() / 3) {
-            Triangle::new(
-                POINTS[i * 3],
-                POINTS[i * 3 + 1],
-                POINTS[i * 3 + 2]
-            ).draw(fb, color::from_u8_rgb((i * 100 + 100) as u8, 100, 50));
-        }
-
-        // DEPRECATED FROM ORIGINAL BG COLOR DRAWING
-        // for x in 0..fb.width() {
-        //     for y in 0..fb.height() {
-        //         fb.set_pixel(x, y, color::from_u8_rgb(20, 20, 20)); // later we need to figure out opacity
-        //     }
+        // loop to test the triangles. For drawing our 2D scenes we will add "z" values to sort how they are drawn.
+        // for i in 0..(POINTS.len() / 3) {
+        //     Triangle::new(
+        //         POINTS[i * 3],
+        //         POINTS[i * 3 + 1],
+        //         POINTS[i * 3 + 2]
+        //     ).draw(fb, color::from_u8_rgb((i * 100 + 100) as u8, 100, 50));
         // }
+        let cam = Camera2D::new(Pos2D::new(0.0, 0.0));
+        for i in 0..(POINTS_ABS.len() / 3) {
+            Triangle::new(
+                POINTS_ABS[i * 3],
+                POINTS_ABS[i * 3 + 1],
+                POINTS_ABS[i * 3 + 2]
+            ).draw_abs(fb, color::from_u8_rgb((i * 100 + 100) as u8, 100, 50), &cam);
+        }
+        Rect::new(Pos2D::new(-200.0, 100.0), 400.0, 5.0).draw_abs(fb, 255255000, &cam)
     }
 
     /// When the game is set up and ready to start, run() is to be called. This is currently the game loop. We will explore other people's game loops to figure out how ours needs to be structured.
     pub fn run(&mut self, debug: bool) {
+        println!("rendering triangle at \n{}\n{}\n{}", POINTS_ABS[0], POINTS_ABS[1], POINTS_ABS[2]);
         while !self.should_close() && !self.window.is_key_down(minifb::Key::Escape) {
             self.draw();
             self.display();
