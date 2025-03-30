@@ -96,7 +96,18 @@ impl TEPILogger {
     }
 
     fn update_file(&self) {
+        if self.buffer.len() < self.buffer_amount as usize {
+            return
+        }
 
+        // payload is what we're writing to the file. map is a simplified foreach loop
+        // they're inserted into a Vec and then combined into one string.
+        let payload = self.buffer.iter()
+            .map(|i| i.fmt_log_string())
+            .collect::<Vec<String>>()
+            .join("");
+
+        // write payload to associated file
     }
 }
 
@@ -109,3 +120,21 @@ impl TEPILogMsg {
         return s.to_string()
     }
 }
+
+// UUID info
+// let uuid_str = "uuid string from file"
+// let parsed_uuid = Uuid::parse_str(uuid_str).expect("unable to parse uuid");
+// assign uuid
+
+// Local info from chrono
+// get current date/time Local::now()
+// customization with % followed by
+// Y year
+// m month
+// d day
+// H hour
+// M minute
+// S second
+
+// formatting a datetime var.format("%Y-%m-%d %H:%M:%s")
+// reading the same format: Local.datetime_from_str(var, "%Y-%m-%d %H:%M:%s")

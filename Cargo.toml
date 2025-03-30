@@ -9,6 +9,8 @@ edition = "2021"
 glfw = "*"
 gl = "*"
 minifb = "*"
+chrono = "*"
+uuid = {version= "1", features = ["v4"]}
 
 [workspace]
 
