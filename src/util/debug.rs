@@ -9,7 +9,8 @@ struct TEPILogger {
     name: String,
     file_location: String,
     buffer_amount: u16,
-    date_started: DateTime<Local>
+    date_started: DateTime<Local>,
+    console_log: bool
 }
 
 struct TEPILogMsg {
@@ -29,7 +30,7 @@ enum TEPILogType {
 }
 
 impl TEPILogger {
-    pub fn new(name: String, fl: String, buffer: Option<u16>) -> TEPILogger {
+    pub fn new(name: String, fl: String, buffer: Option<u16>, console_log: bool) -> TEPILogger {
         // for now we will write to a txt file but will do something more compressed
         let mut b: u16 = 16;
         if let Some(b) = buffer {};
@@ -40,7 +41,8 @@ impl TEPILogger {
             name: name,
             file_location: fl,
             buffer_amount: b,
-            date_started: d
+            date_started: d,
+            console_log: console_log
         }
     }
 
@@ -136,6 +138,27 @@ impl TEPILogger {
     /// in the read and write by using an integer for version.
     /// until the initial log version is hammered down we will not increment versions.
     fn read_header() {
+
+    }
+
+    /// push
+    /// push a new log message
+    /// pushes the log message to the back of the buffer and then checks if the buffer is full.
+    pub fn push(&mut self, msg: TEPILogMsg) {
+        self.buffer.push_back(msg);
+        if self.buffer.len() > self.buffer_amount as usize {
+            self.update_file()
+        }
+    }
+
+    /// pop
+    /// pops the first log message from the buffer and returns it.
+    pub fn pop(&mut self) -> Option<TEPILogMsg> {
+        if self.buffer.len() > 0 {
+            return self.buffer.pop_front()
+        } else {
+            return None
+        }
 
     }
 }
